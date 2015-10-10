@@ -12,8 +12,10 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
+	"github.com/coreos/go-log/log"
 	"io"
 	"net"
+	"os"
 	"strings"
 	"sync/atomic"
 	"time"
@@ -32,6 +34,10 @@ const (
 )
 
 func init() {
+
+	Logger = log.NewSimple(log.WriterSink(os.Stdout, "%s: %s[%d] %s\n",
+		[]string{"priority", "executable", "pid", "message"}))
+
 	if interfaces, err := net.Interfaces(); err == nil {
 		for _, i := range interfaces {
 			if i.Flags&net.FlagLoopback == 0 && len(i.HardwareAddr) > 0 {

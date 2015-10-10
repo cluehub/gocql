@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net"
 	"strconv"
 	"strings"
@@ -145,7 +144,7 @@ func Connect(addr string, cfg ConnConfig, errorHandler ConnErrorHandler) (*Conn,
 
 	// going to default to proto 2
 	if cfg.ProtoVersion < protoVersion1 || cfg.ProtoVersion > protoVersion4 {
-		log.Printf("unsupported protocol version: %d using 2\n", cfg.ProtoVersion)
+		Logger.Warningf("unsupported protocol version: %d using 2\n", cfg.ProtoVersion)
 		cfg.ProtoVersion = 2
 	}
 
@@ -401,7 +400,7 @@ func (c *Conn) recv() error {
 
 	call := &c.calls[head.stream]
 	if call == nil || call.framer == nil {
-		log.Printf("gocql: received response for stream which has no handler: header=%v\n", head)
+		Logger.Warningf("gocql: received response for stream which has no handler: header=%v\n", head)
 		return c.discardFrame(head)
 	}
 

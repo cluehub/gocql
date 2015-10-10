@@ -1,7 +1,6 @@
 package gocql
 
 import (
-	"log"
 	"net"
 	"time"
 )
@@ -105,7 +104,7 @@ func (h *ringDescriber) run(sleep time.Duration) {
 			// try to add new hosts if GetHosts didnt error and the hosts didnt change.
 			hosts, partitioner, err := h.GetHosts()
 			if err != nil {
-				log.Println("RingDescriber: unable to get ring topology:", err)
+				Logger.Errorf("RingDescriber: unable to get ring topology: %s", err.Error())
 			} else {
 				h.session.Pool.SetHosts(hosts)
 				if v, ok := h.session.Pool.(SetPartitioner); ok {

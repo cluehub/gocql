@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"log"
 	"net"
 	"runtime"
 	"sync"
@@ -416,7 +415,7 @@ func (f *framer) parseFrame() (frame frame, err error) {
 		warnings := f.readStringList()
 		// what to do with warnings?
 		for _, v := range warnings {
-			log.Println(v)
+			Logger.Warning(v)
 		}
 	}
 

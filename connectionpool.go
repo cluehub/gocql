@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"math/rand"
 	"net"
 	"sync"
@@ -227,7 +226,7 @@ func (c *SimplePool) connect(addr string) error {
 
 	conn, err := Connect(addr, cfg, c)
 	if err != nil {
-		log.Printf("connect: failed to connect to %q: %v", addr, err)
+		Logger.Errorf("connect: failed to connect to %q: %v", addr, err)
 		return err
 	}
 
@@ -245,7 +244,7 @@ func (c *SimplePool) addConn(conn *Conn) error {
 	//Set the connection's keyspace if any before adding it to the pool
 	if c.keyspace != "" {
 		if err := conn.UseKeyspace(c.keyspace); err != nil {
-			log.Printf("error setting connection keyspace. %v", err)
+			Logger.Errorf("error setting connection keyspace. %v", err)
 			conn.Close()
 			return err
 		}
@@ -799,7 +798,7 @@ func (pool *hostConnPool) logConnectErr(err error) {
 		// these are typical during a node outage so avoid log spam.
 	} else if err != nil {
 		// unexpected error
-		log.Printf("error: failed to connect to %s due to error: %v", pool.addr, err)
+		Logger.Errorf("error: failed to connect to %s due to error: %v", pool.addr, err)
 	}
 }
 
